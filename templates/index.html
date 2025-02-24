@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniWallet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden; /* Completely removes horizontal scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            padding: 20px;
+        }
+
+        /* Background Grid */
+        .grid-container {
+            position: fixed; /* Ensures full coverage */
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+
+        .grid-container span {
+            display: block;
+            width: calc(6.25vw - 2px);
+    height: calc(6.25vw - 2px);
+            background: #f0f0f0;
+            transition: 1s;
+            border: 1px solid orange;
+        }
+
+        .grid-container span:hover {
+            background: orange;
+            transition: 0s;
+        }
+
+        /* Centered Box */
+        .box {
+            position: relative;
+            max-width: 90%;
+            width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            text-align: center;
+            padding: 50px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px orange;
+            z-index: 10;
+            overflow: hidden; /* Prevents any content overflow */
+        }
+
+        /* Typing Animation */
+        .typing-container {
+            font-size: 2.5em;
+            color: orange;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid orange;
+            width: 100%;
+            animation: typing 3s steps(20, end) infinite, blink 0.8s infinite;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .buttons a button {
+            padding: 12px 25px;
+            background: orange;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .buttons a button:hover {
+            background: darkorange;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .box {
+                width: 95%;
+                padding: 40px;
+            }
+
+            .typing-container {
+                font-size: 2em;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .buttons a button {
+                font-size: 1em;
+                padding: 10px 20px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Grid -->
+    <div class="grid-container"></div>
+
+    <!-- Centered UniWallet Box -->
+    <div class="box">
+        <h2><span class="typing-container"></span></h2>
+
+        <div class="buttons">
+            <a href="{{ url_for('signup') }}">
+                <button>Sign Up</button>
+            </a>
+            <a href="{{ url_for('login') }}">
+                <button>Login</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Generate animated grid dynamically
+        const gridContainer = document.querySelector(".grid-container");
+        for (let i = 0; i < 400; i++) { 
+            let span = document.createElement("span");
+            gridContainer.appendChild(span);
+        }
+
+        // Typing Animation for "Welcome to UniWallet"
+        const text = "Welcome to UniWallet";
+        let index = 0;
+        function typeText() {
+            document.querySelector(".typing-container").textContent = text.slice(0, index);
+            index++;
+            if (index <= text.length) {
+                setTimeout(typeText, 100);
+            } else {
+                setTimeout(() => {
+                    index = 0;
+                    typeText();
+                }, 2000);
+            }
+        }
+        typeText();
+    </script>
+
+</body>
+</html>
