@@ -4,81 +4,363 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                            950: '#431407',
+                        },
+                    },
+                    fontFamily: {
+                        'outfit': ['Outfit', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
     <style>
         body {
-            background: #f8f9fa;
-            color: #333;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
-        .profile-container {
-            max-width: 800px;
-            margin: 50px auto;
+        .iti {
+            width: 100%;
+        }
+        .iti__flag {
+            background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags.png");
+        }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .iti__flag {
+                background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags@2x.png");
+            }
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        .neo-input {
+            transition: all 0.3s ease;
             background: #ffffff;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0px 0px 20px rgba(255, 140, 0, 0.7);
+            box-shadow: inset 2px 2px 5px rgba(166, 180, 200, 0.15), 
+                        inset -2px -2px 5px rgba(255, 255, 255, 0.9);
         }
-        .profile-pic {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
+        .neo-input:focus {
+            box-shadow: inset 1px 1px 2px rgba(166, 180, 200, 0.25), 
+                        inset -1px -1px 2px rgba(255, 255, 255, 0.9);
         }
-        .profile-pic img {
-            width: 120px;
-            height: 120px;
+        .wave {
+            position: absolute;
+            height: 80px;
+            width: 100%;
+            background: #f97316;
+            bottom: 0;
+        }
+        .wave::before, .wave::after {
+            content: "";
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            width: 200%;
+            height: 80px;
+            background-color: white;
             border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ff8800;
-            box-shadow: 0px 0px 10px rgba(255, 140, 0, 0.7);
+            transform: translateX(-50%);
         }
-        .btn-custom {
-            background: #ff8800;
-            color: white;
-            width: 100%;
+        .wave::after {
+            top: -50px;
+            opacity: 0.5;
+            height: 65px;
         }
-        .btn-dashboard {
-            background: #ff8800;
-            color: white;
-            width: 100%;
-            margin-top: 10px;
+        .profile-ring {
+            background: conic-gradient(#f97316 0%, rgba(255,255,255,0.2) 60%);
         }
-        .btn-dashboard:hover {
-            background: #0056b3;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .blob {
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: morph 15s linear infinite;
+        }
+        @keyframes morph {
+            0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+            25% { border-radius: 58% 42% 55% 45% / 53% 35% 65% 47%; }
+            50% { border-radius: 32% 68% 38% 62% / 65% 60% 40% 35%; }
+            75% { border-radius: 52% 48% 43% 57% / 35% 65% 35% 65%; }
+            100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
         }
     </style>
 </head>
-<body>
+<body class="bg-white text-gray-800">
+    <!-- Decorative Elements -->
+    <div class="fixed top-10 right-12 w-64 h-64 blob bg-primary-100 opacity-70 -z-10"></div>
+    <div class="fixed top-40 left-12 w-40 h-40 blob bg-primary-100 opacity-70 -z-10 float"></div>
+    <div class="fixed bottom-20 right-36 w-36 h-36 blob bg-primary-50 opacity-60 -z-10"></div>
+    
+    <div class="container px-4 py-12 mx-auto">
+        <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 relative">
+            <!-- Decorative Header with waves -->
+            <div class="relative bg-gradient-to-r from-primary-600 to-primary-500 h-48 overflow-hidden">
+                <!-- Abstract shapes -->
+                <div class="absolute top-8 left-10 w-20 h-20 rounded-full bg-white opacity-10"></div>
+                <div class="absolute top-2 right-12 w-12 h-12 rounded-full bg-white opacity-10"></div>
+                <div class="absolute bottom-16 right-32 w-24 h-24 rounded-full bg-white opacity-10"></div>
+                
+                <!-- Header Content -->
+                <div class="relative z-10 p-8 text-white">
+                    <h1 class="text-3xl font-bold tracking-tight text-center">Your Profile</h1>
+                    <p class="text-center opacity-80 text-sm mt-1">Manage your personal information</p>
+                </div>
+                
+                <!-- Wave Effect -->
+                <div class="wave"></div>
+            </div>
+            
+            <div class="p-6 md:p-8 pt-16">
+                <!-- Profile Picture Section -->
+                <div class="flex flex-col items-center -mt-32 mb-12">
+                    <div class="relative group">
+                        <!-- Circular progress-like ring around profile picture -->
+                        <div class="w-40 h-40 rounded-full profile-ring p-2 flex items-center justify-center">
+                            <div class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg bg-white">
+                                <img id="profilePic" src="{{ url_for('static', filename='uploads/' + (user.get('profile_pic', 'istockphoto-1451587807-612x612.jpg'))) }}" 
+                                    alt="Profile Picture" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 rounded-full flex items-center justify-center group-hover:bg-opacity-20 transition-all duration-300">
+                            <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium">Change photo</span>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-sm text-primary-600 bg-primary-50 px-4 py-1 rounded-full font-medium">Current Profile Picture</p>
+                </div>
 
-<div class="container">
-    <div class="profile-container">
-        <div class="profile-pic">
-            <img id="profilePic" src="{{ url_for('static', filename='uploads/' + user.get('profile_pic', 'default.png')) }}" alt="Profile Picture">
-            <p class="mt-2 text-muted">Current Profile Picture</p>
+                <form action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                    <!-- Two column layout for desktop -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <!-- Unique ID -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Unique ID</label>
+                                <div class="relative">
+                                    <input type="text" class="w-full px-4 py-3 rounded-xl neo-input text-gray-600 focus:outline-none border border-gray-100" 
+                                        value="{{ user.get('unique_id', 'N/A') }}" readonly>
+                                    <div class="absolute right-4 top-3 text-primary-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile Picture Upload -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Profile Picture</label>
+                                <div class="flex items-center">
+                                    <label class="w-full px-4 py-3 bg-white border border-primary-200 rounded-xl cursor-pointer hover:bg-primary-50 transition-colors duration-300">
+                                        <span class="flex items-center justify-center text-sm text-primary-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" />
+                                            </svg>
+                                            Upload Image
+                                        </span>
+                                        <input type="file" class="hidden" name="profile_pic" accept="image/*">
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Full Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Full Name</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="name" value="{{ user.get('name', '') }}" required>
+                            </div>
+                            
+                            <!-- PRN Number -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">PRN Number</label>
+                                <input type="number" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="prn" value="{{ user.get('prn', '') }}" required>
+                            </div>
+                            
+                            <!-- Mobile Number -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Mobile Number</label>
+                                <input id="phone" type="tel" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="mobile" value="{{ user.get('mobile', '') }}" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Gmail ID -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Gmail ID</label>
+                                <div class="relative">
+                                    <input type="email" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                        name="gmail" value="{{ user.get('gmail', '') }}" required>
+                                    <div class="absolute right-4 top-3 text-primary-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- UPI ID -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">UPI ID</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="upi" value="{{ user.get('upi', '') }}">
+                            </div>
+                            
+                            <!-- Department -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Department</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="department" value="{{ user.get('department', '') }}">
+                            </div>
+                            
+                            <!-- Class -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Class</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="course" value="{{ user.get('course', '') }}">
+                            </div>
+                            
+                            <!-- Aadhaar Number -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Aadhaar Number</label>
+                                <div class="relative">
+                                    <input type="text" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                        name="aadhaar" value="{{ user.get('aadhaar', '') }}" pattern="\d{12}" title="Enter a valid 12-digit Aadhaar number">
+                                    <div class="absolute right-4 top-3 text-primary-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17c2.761 0 5-2.239 5-5h2c0 3.866-3.134 7-7 7s-7-3.134-7-7h2c0 2.761 2.239 5 5 5z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Full Width Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                        <!-- Date of Birth -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Date of Birth</label>
+                            <div class="relative">
+                                <input type="date" class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                    name="dob" value="{{ user.get('dob', '') }}" required>
+                                <div class="absolute right-4 top-3 text-primary-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gender -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Gender</label>
+                            <select class="w-full px-4 py-3 rounded-xl neo-input border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" name="gender">
+                                <option value="Male" {% if user.get('gender') == 'Male' %} selected {% endif %}>Male</option>
+                                <option value="Female" {% if user.get('gender') == 'Female' %} selected {% endif %}>Female</option>
+                                <option value="Other" {% if user.get('gender') == 'Other' %} selected {% endif %}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="pt-8 space-y-4">
+                        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white font-medium rounded-xl shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50">
+                            <span class="flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Update Profile
+                            </span>
+                        </button>
+                        
+                        <a href="{{ url_for('dashboard') }}" class="block w-full py-3.5 bg-gray-100 text-primary-600 font-medium text-center rounded-xl shadow-sm hover:bg-gray-200 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">
+                            <span class="flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                Back to Dashboard
+                            </span>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <form action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
-            <div class="mb-3 d-flex align-items-center">
-                <label class="me-3" style="white-space: nowrap;">Profile Picture</label>
-                <input type="file" class="form-control" name="profile_pic">
-            </div>
-            {% for field, label in [('name', 'Full Name'), ('prn', 'PRN Number'), ('mobile', 'Mobile Number'), 
-                ('gmail', 'Gmail ID'), ('upi', 'UPI ID'), ('department', 'Department'), 
-                ('dob', 'Date of Birth'), ('course', 'Course'), ('gender', 'Gender'), ('blood_group', 'Blood Group')] %}
-            <div class="mb-3">
-                <label>{{ label }}</label>
-                <input type="text" class="form-control" name="{{ field }}" value="{{ user.get(field, '') }}">
-            </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-custom">Update Profile</button>
-        </form>
-
-        <!-- ✅ Back to Dashboard Button -->
-        <a href="{{ url_for('dashboard') }}" class="btn btn-dashboard">Back to Dashboard</a>
-
+        
+        <!-- Footer -->
+        <div class="text-center mt-8 text-gray-500 text-sm">
+            <p>© 2025 All Rights Reserved</p>
+        </div>
     </div>
-</div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let profilePic = document.getElementById("profilePic");
+            let defaultPic = "{{ url_for('static', filename='uploads/istockphoto-1451587807-612x612.jpg') }}";
+            let fileInput = document.querySelector("input[name='profile_pic']");
+
+            // Set default picture if none is present
+            if (!profilePic.src || profilePic.src.includes("None")) {
+                profilePic.src = defaultPic;
+            }
+
+            // Live preview of the uploaded image
+            fileInput.addEventListener("change", function (event) {
+                if (event.target.files.length > 0) {
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        profilePic.src = e.target.result;
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+
+            // Initialize International Telephone Input
+            const phoneInputField = document.querySelector("#phone");
+            const phoneInput = window.intlTelInput(phoneInputField, {
+                initialCountry: "in",  // Default to India
+                separateDialCode: true, // Shows country code separately
+                preferredCountries: ["in", "us", "gb"], // Preferred countries at top
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            });
+
+            // Ensure the form submits the full phone number including the country code
+            document.querySelector("form").addEventListener("submit", function () {
+                phoneInputField.value = phoneInput.getNumber(); // Converts to full international format
+            });
+        });
+    </script>
 </body>
 </html>

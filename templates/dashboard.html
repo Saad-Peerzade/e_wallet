@@ -1,22 +1,730 @@
-<!-- templates/dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Orange Bank Dashboard</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: #FF7F50;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 25px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Slideshow */
+        .slideshow {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .slide-title {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .slide-description {
+            font-size: 18px;
+            max-width: 600px;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-1 {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/api/placeholder/1200/800');
+        }
+        
+        .slide-2 {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/api/placeholder/1200/800');
+        }
+        
+        .slide-3 {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/api/placeholder/1200/800');
+        }
+        
+        .slide-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .slide-dot.active {
+            background-color: #FF7F50;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            color: #FF7F50;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #FF7F50;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #FF7F50;
+        }
+        
+        .feature-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #FF7F50;
+        }
+        
+        .about-description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .about-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #FF7F50;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            padding: 40px 0;
+            background-color: white;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            background-color: #FFF5EE;
+        }
+        
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #FF7F50;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #FF7F50;
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: white;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: white;
+            color: #FF7F50;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 991px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                flex-direction: column;
+                background-color: #FF7F50;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-item {
+                margin: 15px 0;
+            }
+            
+            .nav-toggle {
+                display: block;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .slideshow {
+                height: 300px;
+            }
+            
+            .slide-title {
+                font-size: 24px;
+            }
+            
+            .slide-description {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .slideshow {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome to Your Dashboard</h2>
-
-    <ul>
-        <li><a href="{{ url_for('profile') }}">Profile</a></li>
-        <li><a href="{{ url_for('deposit') }}">Deposit Oranges 🍊</a></li>
-        <li><a href="{{ url_for('transactions') }}">Transaction History</a></li>
-        <li><a href="{{ url_for('withdraw') }}">Withdraw Oranges</a></li>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🍊</span>
+                <span>Orange Bank</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('profile') }}" class="nav-link">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('deposit') }}" class="nav-link">Deposit</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('transactions') }}" class="nav-link">Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('withdraw') }}" class="nav-link">Withdraw</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">Logout</a>
+                </li>
+            </ul>
+            
+            <button class="nav-toggle">☰</button>
+        </div>
+    </nav>
     
-    </ul>
-
-    <p><a href="{{ url_for('index') }}">Logout</a></p>
+    <!-- Slideshow Section -->
+    <div class="container">
+        <div class="slideshow">
+            <div class="slide slide-1 active">
+                <h2 class="slide-title">Welcome to Orange Bank</h2>
+                <p class="slide-description">Manage your oranges with our secure and easy-to-use banking system.</p>
+            </div>
+            <div class="slide slide-2">
+                <h2 class="slide-title">Deposit Oranges Securely</h2>
+                <p class="slide-description">Our state-of-the-art security ensures your oranges are safe at all times.</p>
+            </div>
+            <div class="slide slide-3">
+                <h2 class="slide-title">Track Your Transactions</h2>
+                <p class="slide-description">Keep track of all your orange deposits and withdrawals with detailed history.</p>
+            </div>
+            <div class="slide-controls">
+                <span class="slide-dot active" data-slide="0"></span>
+                <span class="slide-dot" data-slide="1"></span>
+                <span class="slide-dot" data-slide="2"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Our Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure Storage</h3>
+                    <p class="feature-description">Your oranges are secured with state-of-the-art encryption and protection systems.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Detailed Analytics</h3>
+                    <p class="feature-description">Track your orange collection growth with comprehensive analytics and reports.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast Transfers</h3>
+                    <p class="feature-description">Instantly transfer oranges to friends and family with our lightning-fast system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="static/videos/slide_1.jpg"  alt="About Orange Bank"> 
+                </div>
+                <div class="about-text">
+                    <h2 class="about-title">About Orange Bank</h2>
+                    <p class="about-description">Orange Bank is the world's leading orange banking system, providing secure storage and management for your precious oranges since 2023. Our mission is to ensure that everyone has access to safe orange banking services.</p>
+                    <p class="about-description">With our innovative approach to orange management, we've revolutionized how people think about their citrus assets.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <div class="stat-number">10M+</div>
+                            <div class="stat-label">Oranges Stored</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">50K+</div>
+                            <div class="stat-label">Happy Users</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Security Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Dashboard Cards -->
+    <section class="dashboard-cards">
+        <div class="container">
+            <h2 class="section-title">Quick Access</h2>
+            <div class="card-grid">
+                <a href="{{ url_for('profile') }}" class="dashboard-card">
+                    <div class="card-icon">👤</div>
+                    <h3 class="card-title">Profile</h3>
+                    <p class="card-description">View and edit your account information</p>
+                </a>
+                <a href="{{ url_for('deposit') }}" class="dashboard-card">
+                    <div class="card-icon">🍊</div>
+                    <h3 class="card-title">Deposit Oranges</h3>
+                    <p class="card-description">Add oranges to your account safely</p>
+                </a>
+                <a href="{{ url_for('transactions') }}" class="dashboard-card">
+                    <div class="card-icon">📜</div>
+                    <h3 class="card-title">Transaction History</h3>
+                    <p class="card-description">Review your orange banking activity</p>
+                </a>
+                <a href="{{ url_for('withdraw') }}" class="dashboard-card">
+                    <div class="card-icon">💰</div>
+                    <h3 class="card-title">Withdraw Oranges</h3>
+                    <p class="card-description">Retrieve oranges from your account</p>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Orange Bank</h3>
+                    <p>The most secure and reliable way to store and manage your oranges. Trusted by citrus lovers worldwide.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                        <a href="#" class="social-icon">ig</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Deposit</a></li>
+                        <li><a href="#">Transactions</a></li>
+                        <li><a href="#">Withdraw</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>Orange Bank HQ</li>
+                        <li>123 Citrus Avenue</li>
+                        <li>Orange County, CA 92868</li>
+                        <li>Email: support@orangebank.com</li>
+                        <li>Phone: (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Orange Bank. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Slideshow Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slide-dot');
+        
+        function showSlide(n) {
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Remove active class from all dots
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            // Show the selected slide and activate dot
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+            
+            currentSlide = n;
+        }
+        
+        // Add click event to dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                showSlide(slideIndex);
+            });
+        });
+        
+        // Auto-change slides every 5 seconds
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+    </script>
 </body>
 </html>

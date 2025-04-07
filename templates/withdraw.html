@@ -6,28 +6,67 @@
 <body>
     <h2>Withdraw Oranges 🍊</h2>
 
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            {% if category == 'success' %}
-                <p style="color: green;">{{ message }}</p>
-            {% else %}
-                <p style="color: red;">{{ message }}</p>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
-    <p>Your Current Balance: <strong>{{ user.balance }}</strong> 🍊</p>
-
-    <form action="{{ url_for('withdraw') }}" method="POST">
+    <form id="withdrawForm">
         <label>Amount:</label>
         <input type="number" name="amount" min="1" required><br>
         <button type="submit">Withdraw</button>
     </form>
+    
+    <br>
+    <!-- Generate and Remove QR Code Buttons -->
+    <button id="generateQrBtn">Generate QR Code</button>
+    <button id="removeQrBtn" style="display:none;">Remove QR Code</button>
+    
+    <!-- QR Code Display Area -->
+    <div id="qrCodeContainer"></div>
 
     <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
 
+    <script>
+        document.getElementById("withdrawForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // ✅ Prevent page reload
+
+            let formData = new FormData(this);
+
+            fetch("{{ url_for('withdraw') }}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("✅ " + data.message);
+                } else {
+                    alert("❌ " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("❌ Something went wrong!");
+            });
+        });
+
+        // ✅ QR Code Generation Logic
+        document.getElementById("generateQrBtn").addEventListener("click", function() {
+            fetch("{{ url_for('generate_qr') }}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.qr_code) {
+                    const qrCodeContainer = document.getElementById("qrCodeContainer");
+                    qrCodeContainer.innerHTML = `<img src="${data.qr_code}" alt="QR Code">`;
+                    document.getElementById("removeQrBtn").style.display = "inline-block";
+                } else {
+                    alert("❌ Failed to generate QR code.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        // ✅ Remove QR Code
+        document.getElementById("removeQrBtn").addEventListener("click", function() {
+            document.getElementById("qrCodeContainer").innerHTML = "";
+            this.style.display = "none";
+        });
+    </script>
 </body>
 </html>
