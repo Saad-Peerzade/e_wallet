@@ -5,35 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-orange: #FF7A00;
+            --light-orange: #FFF0E4;
+            --dark-orange: #E06000;
+            --pure-white: #FFFFFF;
+            --off-white: #FAFAFA;
+        }
+        
+        body {
+            background-color: var(--off-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .transaction-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: var(--pure-white);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(255, 122, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .page-title {
+            color: var(--primary-orange);
+            font-weight: 700;
+            font-size: 2.25rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .page-title:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-orange);
+            border-radius: 2px;
+        }
+        
+        .transaction-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .transaction-table thead {
+            background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+            color: white;
+        }
+        
+        .transaction-table th {
+            padding: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+        
+        .transaction-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+        }
+        
+        .deposit-row {
+            background-color: rgba(0, 200, 83, 0.07);
+        }
+        
+        .withdrawal-row {
+            background-color: rgba(255, 122, 0, 0.07);
+        }
+        
+        .transaction-table tr:hover td {
+            background-color: var(--light-orange);
+            transition: all 0.2s ease;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 122, 0, 0.2);
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3);
+        }
+        
+        @media (max-width: 640px) {
+            .transaction-container {
+                padding: 1rem;
+                margin: 1rem;
+                border-radius: 10px;
+            }
+            
+            .page-title {
+                font-size: 1.75rem;
+            }
+            
+            .transaction-table th, 
+            .transaction-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 p-6">
+<body>
+    <div class="transaction-container">
+        <h2 class="page-title">Transaction History</h2>
 
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Transaction History</h2>
-
-        <table class="w-full border-collapse border border-gray-300">
+        <table class="transaction-table">
             <thead>
-                <tr class="bg-gray-200">
-                    <th class="border p-2">Type</th>
-                    <th class="border p-2">Amount</th>
-                    <th class="border p-2">Date</th>
+                <tr>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 {% for transaction in transactions %}
-                <tr class="{% if transaction.type == 'deposit' %} bg-green-100 {% else %} bg-red-100 {% endif %}">
-                    <td class="border p-2 text-center">{{ transaction.type.capitalize() }}</td>
-                    <td class="border p-2 text-center">₹{{ transaction.amount }}</td>
-                    <td class="border p-2 text-center">{{ transaction.date }}</td>
+                <tr class="{% if transaction.type == 'deposit' %} deposit-row {% else %} withdrawal-row {% endif %}">
+                    <td class="text-center">{{ transaction.type.capitalize() }}</td>
+                    <td class="text-center">₹{{ transaction.amount }}</td>
+                    <td class="text-center">{{ transaction.date }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <div class="mt-4 text-center">
-            <a href="{{ url_for('dashboard') }}" class="text-blue-500 underline">Back to Dashboard</a>
+        <div class="text-center">
+            <a href="{{ url_for('dashboard') }}" class="back-button">
+                Back to Dashboard
+            </a>
         </div>
     </div>
-
 </body>
 </html>

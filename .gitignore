@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+*.env
+
+# Flask/MongoDB instance folders
+instance/
+.mongod.lock
+
+# Uploaded files
+static/uploads/
+
+# VS Code settings
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python virtual environments
+venv/
+env/
+ENV/
+.venv/

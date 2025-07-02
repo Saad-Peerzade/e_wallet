@@ -14,10 +14,10 @@ import string
 
 app = Flask(__name__)
 
-# Configuration
+
 app.config['SECRET_KEY'] = '123456789'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/e_wallet'
-app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Directory for profile pictures
+app.config['UPLOAD_FOLDER'] = 'static/uploads'  
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Ensure upload folder exists
@@ -204,8 +204,7 @@ def deposit():
     except ValueError:
         return jsonify({"status": "error", "message": "Invalid input. Enter a valid number!"}), 400
 
-
-    # if 'user' not in session:
+# if 'user' not in session:
     #     return redirect(url_for('login'))
 
     # email = session['user'].strip().lower()
@@ -267,7 +266,7 @@ def deposit():
     #         if result.modified_count > 0:
     #             flash(f"✅ Successfully deposited {amount} 🍊 Oranges!", "success")
     #         else:
-    #             flash("⚠️ Deposit failed! Try again.", "error")
+    #             flash("⚠ Deposit failed! Try again.", "error")
 
     #         return redirect(url_for('dashboard'))  
     #     except ValueError:
@@ -324,7 +323,7 @@ def deposit():
     #         current_balance = user.get('balance', 0)
     #         new_balance = current_balance + amount  
 
-    #         # 🔥 Fix: Ensure update_one uses `$set`
+    #         # 🔥 Fix: Ensure update_one uses $set
     #         result = mongo.db.users.update_one(
     #             {'email': session['user']}, 
     #             {'$set': {'balance': new_balance}}
